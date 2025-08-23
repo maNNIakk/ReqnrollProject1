@@ -1,22 +1,23 @@
-﻿using ReqnrollProject1.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using static ReqnrollProject1.Models.Products;
 
 namespace ReqnrollProject1.StepDefinitions.ShoppingBasket
 {
     [Binding]
-    public sealed class ShoppingBasketRunSteps
+    public sealed class ShoppingBasketRunSteps 
     {
-     
+        private ProductTestDataContext _productTestDataContext;
+        public ShoppingBasketRunSteps(ProductTestDataContext productTestDataContext)
+        {
+            _productTestDataContext = productTestDataContext;
+        }
+
 
         [When("I click the Add to Basket button")]
         public void WhenIClickTheAddToBasketButton()
         {
         
-            if (Products.ProductUnderTest!.Stock > 0 && Products.ProductUnderTest.Basket == 0)
+            if (_productTestDataContext.ProductUnderTest!.Stock > 0 && _productTestDataContext.ProductUnderTest.Basket == 0)
             {
                 AddToBasket();
             }
@@ -25,25 +26,32 @@ namespace ReqnrollProject1.StepDefinitions.ShoppingBasket
         [When("I remove Product Id {int} from basket")]
         public void WhenIRemoveProductIdFromBasket(int productId)
         {
-            Products.ProductUnderTest = Products.SeededProducts?.FirstOrDefault(p => p.ProductId == productId);
-            if (Products.ProductUnderTest == null) throw new ArgumentNullException(nameof(Products.ProductUnderTest), $"Product with ID {productId} not found in the seed data.");            
-            if (Products.ProductUnderTest.Basket > 0)
+            _productTestDataContext.ProductUnderTest = _productTestDataContext.SeededProducts?.FirstOrDefault(p => p.ProductId == productId);
+            if (_productTestDataContext.ProductUnderTest == null) throw new ArgumentNullException(nameof(_productTestDataContext.ProductUnderTest), $"Product with ID {productId} not found in the seed data.");            
+            if (_productTestDataContext.ProductUnderTest.Basket > 0)
             {
                 RemoveFromBasket();
             }
         }
+
+        [When("I add offer code {string} to the basket")]
+        public void WhenIAddOfferCodeToTheBasket(string p0)
+        {
+
+        }
+
         private string AddToBasket()
         {
-            Products.ProductUnderTest!.Basket++;
-            Products.ProductUnderTest.Stock--;
-            return Products.ProductUnderTest.Message = "Added to basket";
+            _productTestDataContext.ProductUnderTest!.Basket++;
+            _productTestDataContext.ProductUnderTest.Stock--;
+            return _productTestDataContext.ProductUnderTest.Message = "Added to basket";
         }
 
         private string RemoveFromBasket()
         {
-            Products.ProductUnderTest!.Basket--;
-            Products.ProductUnderTest.Stock++;
-            return Products.ProductUnderTest.Message = "Removed from basket";
+            _productTestDataContext.ProductUnderTest!.Basket--;
+            _productTestDataContext.ProductUnderTest.Stock++;
+            return _productTestDataContext.ProductUnderTest.Message = "Removed from basket";
 
         }
     }

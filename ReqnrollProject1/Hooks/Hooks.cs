@@ -1,5 +1,6 @@
-﻿using Reqnroll;
-using Reqnroll.Bindings;
+﻿using Reqnroll.Assist;
+using Reqnroll.Assist.ValueRetrievers;
+using ReqnrollProject1.Utils;
 using System.Diagnostics;
 
 namespace ReqnrollProject1.Hooks
@@ -9,24 +10,34 @@ namespace ReqnrollProject1.Hooks
     {
         private IReqnrollOutputHelper _outputHelper;
         private ScenarioContext _scenarioContext;
-        private FeatureContext _featureContext;
 
         public Hooks(IReqnrollOutputHelper outputHelper, FeatureContext featureContext, ScenarioContext scenarioContext)
         {
             _outputHelper = outputHelper;
-            _featureContext = featureContext;
             _scenarioContext = scenarioContext;
         }
         [BeforeTestRun]
         public static void BeforeTestRun()
         {
-            Debug.WriteLine(nameof(BeforeTestRun));
+            Service.Instance.ValueRetrievers.Register(new ClothesSizeRetriever());
+            Service.Instance.ValueComparers.Register(new ClothesSizeComparer());
+
+            Service.Instance.ValueRetrievers.Unregister<BoolValueRetriever>();
+            Service.Instance.ValueRetrievers.Register(new BooleanValueRetriever());
+
+            Service.Instance.ValueRetrievers.Register(new UserTypeRetriever());
+            Service.Instance.ValueRetrievers.Unregister<Reqnroll.Assist.ValueRetrievers.StringValueRetriever>();
+            Service.Instance.ValueRetrievers.Register(new Utils.StringValueRetriever());
+
         }
         [AfterTestRun]
         public static void AfterTestRun()
         {
-            // Code to run after the test run
-            Debug.WriteLine(nameof(AfterTestRun));
+            Service.Instance.ValueRetrievers.Unregister(new ClothesSizeRetriever());
+            Service.Instance.ValueComparers.Unregister(new ClothesSizeComparer());
+            Service.Instance.ValueRetrievers.Unregister(new BooleanValueRetriever());
+            Service.Instance.ValueRetrievers.Unregister(new UserTypeRetriever());
+
         }
 
         [BeforeFeature]

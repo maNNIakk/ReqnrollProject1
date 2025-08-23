@@ -1,10 +1,8 @@
 ﻿namespace ReqnrollProject1.Models
 {
-    public static class Products
+    public class Products
     {
-        private static List<ProductQuantities>? _seededProducts;
-        private static ProductQuantities? _productUnderTest;
-
+        public const string PRODUCT_TEST_DATA_CONTEXT = "ProductTestDataContext";
         public class ProductQuantities
         {
             public int ProductId { get; set; }
@@ -15,17 +13,53 @@
 
         }
 
-        public static List<ProductQuantities> SeededProducts
+        public class ProductTestDataContext
         {
-            get => _seededProducts!; 
-            set => _seededProducts = value; 
+            public List<ProductQuantities>? SeededProducts;
+            public ProductQuantities? ProductUnderTest;
         }
 
-        public static ProductQuantities? ProductUnderTest 
-        {  
-            get => _productUnderTest;
-            set => _productUnderTest = value;
-            
+        public class OfferCodeContext
+        {
+            public List<OfferCodes>? OfferCodes { get; set; }
+            public DateTime Today { get; set; } 
+        }
+
+        public class ClothesSizeContext
+        {
+            public List<ClothesSize>? clothesSize;
+        }
+
+        public class OfferCodes
+        {
+            public string? OfferCode { get; set; }
+            public DateTime ExpiryDate { get; set; }
+            public OfferCodeType OfferCodeType { get; set; }
+            public bool IsValid { get; set; }
+
+        }
+
+        public enum OfferCodeType
+        {
+            ByProduct,
+            ByDate,
+            ByPrice,
+            ByDay
+        }
+
+        public class ClothesSize
+        {
+            public string? Name { get; set; }
+            public InternalSize? Size { get; set; }
+
+        }
+
+        public class InternalSize
+        {
+            public string? InternalName { get; set; }
+            public string? Width { get;set; }
+            public string? Height { get; set; }
+
         }
     }
 }
