@@ -33,13 +33,6 @@ namespace ReqnrollProject1.StepDefinitions.ShoppingBasket
                 RemoveFromBasket();
             }
         }
-
-        [When("I add offer code {string} to the basket")]
-        public void WhenIAddOfferCodeToTheBasket(string p0)
-        {
-
-        }
-
         private string AddToBasket()
         {
             _productTestDataContext.ProductUnderTest!.Basket++;

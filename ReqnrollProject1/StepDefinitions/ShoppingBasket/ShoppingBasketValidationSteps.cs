@@ -34,12 +34,6 @@ namespace ReqnrollProject1.StepDefinitions.ShoppingBasket
         {
             //_scenarioContext!.Pending();
         }
-
-        [Then("the offer code is valid")]
-        public void ThenTheOfferCodeIsValid()
-        {
-        }
-
         [Then("the clothing data is translated to")]
         public void ThenTheClothingDataIsTranslatedTo(DataTable dataTable)
         {
